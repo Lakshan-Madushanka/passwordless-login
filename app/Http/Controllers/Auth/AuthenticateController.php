@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticateController extends Controller
 {
-    public function __construct(private readonly AuthenticateUserAction $authenticateUserAction) {}
+    public function __construct(private readonly AuthenticateUserAction $authenticateUserAction)
+    {
+    }
 
     public function __invoke(Request $request, string $id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {

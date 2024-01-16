@@ -14,7 +14,7 @@ it('can authenticate a user', function (): void {
     get('/'); // we should set session store on request
 
     $user = User::factory()->create();
-    /** @var LogOutUserAction $logOutUserAction **/
+    /** @var LogOutUserAction $logOutUserAction * */
     $logOutUserAction = app(LogOutUserAction::class);
 
     actingAs($user);

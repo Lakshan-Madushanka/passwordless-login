@@ -15,7 +15,6 @@ it('return 401 for malformed url', function (): void {
     get(route('authenticate', ['id' => $user->id]))
         ->assertForbidden();
 
-
 });
 
 it('can authenticate a user', function (): void {
