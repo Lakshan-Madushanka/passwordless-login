@@ -1,11 +1,14 @@
 <?php
 
 use App\Actions\Auth\RegisterNewUserAction;
+use App\Actions\Auth\SendLoginLinkAction;
 use Illuminate\Validation\Rule;
+use function Laravel\Folio\middleware;
 use function Livewire\Volt\{layout, state, rules};
 use function Laravel\Folio\name;
 
 name('register');
+middleware('guest');
 
 state(['name', 'email', 'success' => false,]);
 
@@ -14,10 +17,12 @@ rules([
     'email' => ['required', 'email', Rule::unique('users')]
 ]);
 
-$submit = function (RegisterNewUserAction $registerNewUserAction) {
+$submit = function (RegisterNewUserAction $registerNewUserAction, SendLoginLinkAction $sendLoginLinkAction) {
     $this->validate();
 
     $user = $registerNewUserAction->execute($this->name, $this->email);
+
+    $sendLoginLinkAction->execute(email: $this->email);
 
     $this->success = true;
 };
@@ -36,7 +41,9 @@ $submit = function (RegisterNewUserAction $registerNewUserAction) {
                 <div class="text-center p-4 max-w-screen-sm shadow-lg shadow-amber-600 bg-white rounded">
                     <h1 class="font-bold text-xl mb-4">You have successfully registered to the system</h1>
                     <p>We have emailed you that contains login url to your email address.</p>
-                    <small>If you haven't received the email click <x-a href="{{route('login')}}">login</x-a> button to resend.</small>
+                    <small>If you haven't received the email click
+                        <x-a href="{{route('login')}}">login</x-a>
+                        button to resend.</small>
                 </div>
             </div>
         @else

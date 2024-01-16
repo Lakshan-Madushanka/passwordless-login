@@ -1,23 +1,30 @@
 <?php
 
 use App\Actions\Auth\RegisterNewUserAction;
+use App\Actions\Auth\SendLoginLinkAction;
+use Illuminate\Validation\Rule;
+use function Laravel\Folio\middleware;
 use function Livewire\Volt\{layout, state, rules};
 use function Laravel\Folio\name;
 
 name('login');
+middleware('guest');
 
-state(['email', 'session_time' => 43200]);
+state(['email', 'session_time' => 43200, 'success' => false]);
 
 rules([
-    'email' => ['required', 'email'],
+    'email' => ['required', 'email', Rule::exists('users')],
     'session_time' => ['integer', 'between:1,43200'],
 ]);
 
-$submit = function (RegisterNewUserAction $registerNewUserAction) {
+$submit = function (SendLoginLinkAction $sendLoginLinkAction) {
+    $this->success = false;
+
     $this->validate();
 
-    dd($this->session_time);
-    //$registerNewUserAction->execute();
+    $sendLoginLinkAction->execute(email: $this->email, sessionTime: $this->session_time);
+
+    $this->success = true;
 };
 
 
@@ -57,10 +64,18 @@ $submit = function (RegisterNewUserAction $registerNewUserAction) {
                     />
                     @error('session_time') <span class="text-red-500">{{$message}}</span> @enderror
                 </div>
+                @if($success)
+                    <div class="mb-6">
+                        <p class="text-center text-green-600 font-bold">Login link sent to your email address.</p>
+                    </div>
+                @endif
                 <div class="flex items-center justify-between">
                     <x-button>
-                        Sign In
-                    </x-button>
+                        @if(! $success)
+                            Sign In
+                        @else
+                            Resend
+                        @endif                        </x-button>
                     <x-a wire:navigate class="text-lg" href="{{route('register')}}">
                         Sign Up
                     </x-a>

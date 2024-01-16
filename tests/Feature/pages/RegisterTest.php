@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
+use App\Notifications\Auth\LoginLinkCreated;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Livewire\Volt\Volt;
 
@@ -38,4 +41,20 @@ test('name should not exceed 25 characters', function (): void {
         ->set('name', Str::repeat('a', 26))
         ->call('submit')
         ->assertHasErrors(['name' => ['max']]);
+});
+
+// Finish validation tests
+
+it('send login link after successfully registration', function (): void {
+    Notification::fake();
+
+    $user = User::factory()->make();
+
+    $component = Volt::test('register')
+        ->set('name', $user->name)
+        ->set('email', $user->email)
+        ->call('submit')
+        ->assertHasNoErrors();
+
+    Notification::assertSentTo(User::query()->first(), LoginLinkCreated::class);
 });

@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->ulid('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('remember_token')->nullable();
             $table->timestamps();
         });
     }
