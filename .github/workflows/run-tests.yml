@@ -25,9 +25,12 @@ jobs:
         run: |
           sleep 1m
           docker ps
-        
+
       - name: Install dependencies
         run: composer install
+
+      - name: Build vite assets
+        run: npm run build
 
       - name: Setup project for testing
         run: |
