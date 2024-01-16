@@ -17,7 +17,6 @@ it('can create a valid login link', function (): void {
 
     parse_str($queryString, $query);
 
-
     expect(str($path)->contains('authenticate'))
         ->toBeTrue()
         ->and(str($path)->afterLast('/')->toString())

@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class LogOutUserAction
 {
-    public function __construct(private readonly Request $request) {}
+    public function __construct(private readonly Request $request)
+    {
+    }
 
     public function execute(): void
     {
         Auth::logout();
-
 
         $this->request->session()->invalidate();
 

@@ -16,6 +16,6 @@ it('can create a new user', function (): void {
     $registerUserAction->execute(...$user->toArray());
 
     assertDatabaseHas('users', [
-        ...$user->toArray()
+        ...$user->toArray(),
     ]);
 });

@@ -11,7 +11,7 @@ class AuthenticateUserAction
 {
     public function execute(string $userId, int $sessionTime): void
     {
-        /** @var User $user**/
+        /** @var User $user* */
         $user = User::query()->findOrFail($userId);
 
         $originalSessionTime = config('session.lifetime');
