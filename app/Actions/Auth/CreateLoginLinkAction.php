@@ -11,7 +11,7 @@ class CreateLoginLinkAction
     public function execute(string $userId, int $sessionTime = 43200): string
     {
         return URL::temporarySignedRoute(
-            name:'authenticate',
+            name: 'authenticate',
             expiration: now()->addMinutes(10),
             parameters: [
                 'id' => $userId,

@@ -11,7 +11,7 @@ class SendLoginLinkAction
 {
     public function execute(string $email, int $sessionTime = 43200): void
     {
-        /** @var CreateLoginLinkAction $createLoginLinkAction **/
+        /** @var CreateLoginLinkAction $createLoginLinkAction * */
         $createLoginLinkAction = app(CreateLoginLinkAction::class);
 
         /** @var User $user */
